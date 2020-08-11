@@ -135,13 +135,55 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
-var _default =
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default2 =
 {
-  data: function data() {
-    return {};
+  props: {
+    item: {
+      type: Object,
+      default: function _default() {
+        return {};
+      } },
 
-
-  } };exports.default = _default;
+    types: {
+      type: String,
+      default: '' } } };exports.default = _default2;
 
 /***/ }),
 

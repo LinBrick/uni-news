@@ -3,7 +3,9 @@
 		<navbar></navbar>
 		<tab :list="tabList" @tab="tab"></tab>
 		<list-scroll>
-			<list-card v-for="item in 5"></list-card>
+			<list-card types="base"></list-card>
+			<list-card types="column"></list-card>
+			<list-card types="image"></list-card>
 		</list-scroll>
 	</view>
 </template>

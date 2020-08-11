@@ -13,6 +13,7 @@
 				</view>
 			</view>
 		</view>
+		<view :style="{height: `${statusBarHeight+navBarHeight}px`}"></view>
 	</view>
 </template>
 

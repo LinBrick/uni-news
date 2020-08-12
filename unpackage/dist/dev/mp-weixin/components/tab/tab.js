@@ -145,8 +145,17 @@ var _default2 =
       type: Array,
       default: function _default() {
         return [];
-      } } },
+      } },
 
+    tabIndex: {
+      type: Number,
+      default: 0 } },
+
+
+  watch: {
+    tabIndex: function tabIndex(newVal) {
+      this.activeIndex = newVal;
+    } },
 
   data: function data() {
     return {

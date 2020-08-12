@@ -179,11 +179,13 @@ var _default2 =
       type: Object,
       default: function _default() {
         return {};
-      } },
+      } }
 
-    types: {
-      type: String,
-      default: '' } } };exports.default = _default2;
+    // types: {
+    // 	type: String,
+    // 	default: ''
+    // }
+  } };exports.default = _default2;
 
 /***/ }),
 

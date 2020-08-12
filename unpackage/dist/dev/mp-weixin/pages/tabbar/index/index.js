@@ -99,11 +99,8 @@ var components = {
   tab: function() {
     return __webpack_require__.e(/*! import() | components/tab/tab */ "components/tab/tab").then(__webpack_require__.bind(null, /*! @/components/tab/tab.vue */ 47))
   },
-  listScroll: function() {
-    return __webpack_require__.e(/*! import() | components/list-scroll/list-scroll */ "components/list-scroll/list-scroll").then(__webpack_require__.bind(null, /*! @/components/list-scroll/list-scroll.vue */ 61))
-  },
-  listCard: function() {
-    return __webpack_require__.e(/*! import() | components/list-card/list-card */ "components/list-card/list-card").then(__webpack_require__.bind(null, /*! @/components/list-card/list-card.vue */ 69))
+  list: function() {
+    return __webpack_require__.e(/*! import() | components/list/list */ "components/list/list").then(__webpack_require__.bind(null, /*! @/components/list/list.vue */ 88))
   }
 }
 var render = function() {
@@ -153,22 +150,25 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
-//
-//
 var _default =
 {
   data: function data() {
     return {
       title: 'Hello',
-      tabList: [] };
+      tabList: [],
+      tabIndex: 0,
+      activeIndex: 0 };
 
   },
   onLoad: function onLoad() {
     this.getLabel();
   },
   methods: {
+    change: function change(current) {
+      this.tabIndex = current;
+    },
     tab: function tab(_ref) {var data = _ref.data,index = _ref.index;
-
+      this.activeIndex = index;
     },
     getLabel: function getLabel() {var _this = this;
       this.$uniCloudFunction('get_lable').then(function (res) {

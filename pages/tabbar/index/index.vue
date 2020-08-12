@@ -1,12 +1,10 @@
 <template>
 	<view class="home">
 		<navbar></navbar>
-		<tab :list="tabList" @tab="tab"></tab>
-		<list-scroll>
-			<list-card types="base"></list-card>
-			<list-card types="column"></list-card>
-			<list-card types="image"></list-card>
-		</list-scroll>
+		<tab :list="tabList" :tabIndex="tabIndex" @tab="tab"></tab>
+		<view class="home-list">
+			<list :tab="tabList" :activeIndex="activeIndex" @change="change"></list>
+		</view>
 	</view>
 </template>
 
@@ -15,15 +13,20 @@
 		data() {
 			return {
 				title: 'Hello',
-				tabList: []
+				tabList: [],
+				tabIndex: 0,
+				activeIndex: 0
 			}
 		},
 		onLoad() {
 			this.getLabel()
 		},
 		methods: {
+			change(current) {
+				this.tabIndex = current
+			},
 			tab({data, index}) {
-				
+				this.activeIndex = index
 			},
 			getLabel() {
 				this.$uniCloudFunction('get_lable').then(res => {
@@ -44,5 +47,9 @@
 		flex-direction: column;
 		flex: 1;
 		overflow: hidden;
+		.home-list {
+			flex:1;
+			box-sizing: border-box;
+		}
 	}
 </style>

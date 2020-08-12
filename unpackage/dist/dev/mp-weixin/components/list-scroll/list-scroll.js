@@ -128,7 +128,11 @@ var _default =
     return {};
 
 
-  } };exports.default = _default;
+  },
+  methods: {
+    loadMore: function loadMore() {
+      this.$emit('loadmore');
+    } } };exports.default = _default;
 
 /***/ }),
 

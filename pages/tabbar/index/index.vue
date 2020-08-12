@@ -24,13 +24,18 @@
 		methods: {
 			change(current) {
 				this.tabIndex = current
+				this.activeIndex = current
 			},
 			tab({data, index}) {
 				this.activeIndex = index
 			},
 			getLabel() {
 				this.$uniCloudFunction('get_lable').then(res => {
-					this.tabList = res.data
+					const { data } = res
+					data.unshift({
+						name: '全部'
+					})
+					this.tabList = data
 				})
 			}
 		}

@@ -1,7 +1,7 @@
 <template>
 	<swiper class="home-swiper" :current="activeIndex" @change="change">
 		<swiper-item v-for="(item,index) in tab" :key="item._id" class="swiper-item">
-			<list-item :list="listCatchData[index]"></list-item>
+			<list-item :list="listCatchData[index]" :load="load[index]"  @loadmore="loadmore"></list-item>
 		</swiper-item>
 	</swiper>
 </template>
@@ -27,7 +27,10 @@
 		data() {
 			return {
 				list: [],
-				listCatchData: {}
+				listCatchData: {},
+				load: {},
+				page: 1,
+				pageSize: 10
 			};
 		},
 		watch: {
@@ -36,21 +39,44 @@
 				this.getList(this.activeIndex)
 			}
 		},
-		created() {
-			// this.getList(this.tab[this.activeIndex].name)
-			// this.getList(0)
-		},
 		methods: {
+			loadmore() {
+				if(this.load[this.activeIndex].loading === 'noMore') return
+				this.load[this.activeIndex].page++
+				this.getList(this.activeIndex)
+			},
 			change(e) {
 				const { current } = e.detail
-				this.getList(current)
 				this.$emit('change', current)
+				if(!this.listCatchData[current] || this.listCatchData[current].length === 0) {
+					this.getList(current)
+				}
 			},
 			getList(current) {
-				this.$uniCloudFunction('get_list',{name: this.tab[current].name}).then(result => {
-					// this.list = result.data
-					// this.listCatchData[current] = result.data
-					this.$set(this.listCatchData, current, result.data)
+				if(!this.load[current]) {
+					this.load[current] = {
+						page: 1,
+						loading: 'loading'
+					}
+				}
+				this.$uniCloudFunction('get_list', {
+						name: this.tab[current].name,
+						page: this.load[current].page,
+						pageSize: 10
+					}).then(result => {
+						console.log('请求成功')
+						const { data } = result
+						if(data.length === 0) {
+							let oldLoad = {}
+							oldLoad.loading = 'noMore'
+							oldLoad.page = this.load[current].page
+							this.$set(this.load, current, oldLoad)
+							this.$forceUpdate()
+							return
+						}
+						const oldList = JSON.parse(JSON.stringify(this.listCatchData[current] || []))
+						oldList.push(...data)
+						this.$set(this.listCatchData, current, oldList)
 				})
 			}
 		}

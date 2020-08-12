@@ -166,13 +166,18 @@ var _default =
   methods: {
     change: function change(current) {
       this.tabIndex = current;
+      this.activeIndex = current;
     },
     tab: function tab(_ref) {var data = _ref.data,index = _ref.index;
       this.activeIndex = index;
     },
     getLabel: function getLabel() {var _this = this;
-      this.$uniCloudFunction('get_lable').then(function (res) {
-        _this.tabList = res.data;
+      this.$uniCloudFunction('get_lable').then(function (res) {var
+        data = res.data;
+        data.unshift({
+          name: '全部' });
+
+        _this.tabList = data;
       });
     } } };exports.default = _default;
 

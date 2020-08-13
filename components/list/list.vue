@@ -64,7 +64,6 @@
 						page: this.load[current].page,
 						pageSize: 10
 					}).then(result => {
-						console.log('请求成功')
 						const { data } = result
 						if(data.length === 0) {
 							let oldLoad = {}

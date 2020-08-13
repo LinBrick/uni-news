@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view @click.stop="open">
 		<!-- 基础卡片 -->
 		<view v-if="item.mode === 'base'" class="listcard">
 			<view class="listcard-image">
@@ -8,6 +8,7 @@
 			<view class="listcard-content">
 				<view class="listcard-content__title" style="font-size:14px;font-bold:400;">
 					<text>{{item.title}}</text>
+					<likes :item="item"></likes>
 				</view>
 				<view class="listcard-content__des">
 					<view class="listcard-content__des-lable">
@@ -22,6 +23,7 @@
 			<view class="listcard-content">
 				<view class="listcard-content__title" style="font-size:14px;font-bold:400;">
 					<text>{{item.title}}</text>
+					<likes :item="item"></likes>
 				</view>
 				<view class="listcard-image">
 					<view v-for="(url,index) in item.cover.slice(0,3)" :key="index" class="listcard-image__item">
@@ -44,6 +46,7 @@
 			<view class="listcard-content">
 				<view class="listcard-content__title" style="font-size:14px;font-bold:400;">
 					<text>{{item.title}}</text>
+					<likes :item="item"></likes>
 				</view>
 				<view class="listcard-content__des">
 					<view class="listcard-content__des-lable">
@@ -69,6 +72,11 @@
 			// 	type: String,
 			// 	default: ''
 			// }
+		},
+		methods: {
+			open() {
+				
+			}
 		}
 	}
 </script>
@@ -99,6 +107,8 @@
 			padding-left: 10px;
 			width: 100%;
 			.listcard-content__title {
+				position: relative;
+				padding-right: 30px;
 				fons-size: 14px;
 				color: #333;
 				fong-weight: 400;
@@ -110,6 +120,7 @@
 					-webkit-line-clamp: 2;
 					-webkit-box-orient: vertical;
 				}
+				
 			}
 		}
 		.listcard-content__des {

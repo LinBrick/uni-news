@@ -3,10 +3,14 @@ function $http(options) {
 		name,
 		data
 	} = options;
+	const dataObj = {
+		user_id: '5f32282c35a9a80001914e13',
+		...data
+	}
 	return new Promise((resolve, reject) => {
 		uniCloud.callFunction({
 			name,
-			data: data || {}
+			data: dataObj || {}
 		}).then(res => {
 			if(res.result.code === 200) {
 				resolve(res.result)

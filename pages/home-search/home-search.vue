@@ -1,6 +1,6 @@
 <template>
 	<view class="home">
-		<navbar :isSearch="true" @input="change"></navbar>
+		<navbar :isSearch="true" v-model="value" @input="change"></navbar>
 		<view class="home-list">
 			<view v-if="is_history" class="label-box">
 				<view class="label-header">
@@ -8,14 +8,18 @@
 					<text class="label-clear">清空</text>
 				</view>
 				<view v-if="historyLists.length" class="label-content">
-					<view class="label-content__item" v-for="item in historyLists">{{item.name}}</view>
+					<view class="label-content__item" v-for="item in historyLists" @click="openHistory(item)">{{item.name}}</view>
 				</view>
 				<view v-else class="no-data">
 					没有搜索历史
 				</view>
 			</view>
 			<list-scroll v-else class="list-scroll">
-				<list-card mode="base" :item="item" v-for="item in searchList" :key="item._id" ></list-card>
+				<uni-load-more v-show="loading" status="loading" iconType="snow"></uni-load-more>
+				<list-card :item="item" v-for="item in searchList" :key="item._id" @click="setHistory"></list-card>
+				<view v-if="searchList.length === 0 && !loading" class="no-data">
+					没有搜索到相关数据
+				</view>
 			</list-scroll>
 		</view>
 	</view>
@@ -26,33 +30,58 @@
 	export default {
 		data() {
 			return {
+				value: '',
 				is_history: true,
-				searchList: []
+				searchList: [],
+				loading: false
 			}
 		},
 		computed: {
 			...mapState(['historyLists'])
 		},
-		onLoad() {
-			// this.getList()
-		},
 		methods: {
-			change(value) {
-				console.log(value)
-			},
-			testBtn() {
+			setHistory() {
 				this.$store.dispatch('set_history', {
-					name:'test'
+					name: this.value
 				})
 			},
-			getList(current) {
-				this.$uniCloudFunction('get_list', {
-					name: '全部',
-					page: 1,
-					pageSize: 20
+			openHistory(item) {
+				this.value = item.name
+				this.getSearch(this.value)
+			},
+			change(value) {
+				this.value = value
+				if(!value) {
+					clearTimeout(this.timer)
+					this.mark = false
+					this.getSearch(value)
+					return
+				}
+				if(!this.mark) {
+					this.mark = true
+					this.timer = setTimeout(() => {
+						this.mark = false
+						this.getSearch(value)
+					}, 1000)
+				}
+			},
+			getSearch(value) {
+				if(!value) {
+					this.searchList = []
+					this.is_history = true
+					return
+				}
+				this.is_history = false
+				this.loading = true
+				this.$uniCloudFunction('get_search', {
+					value
 				}).then(res => {
 					const { data } = res
 					this.searchList = data
+					this.loading = false
+					console.log(this.searchList)
+				}).catch(() => {
+					this.loading = false
 				})
 			}
 		}

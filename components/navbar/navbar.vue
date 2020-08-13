@@ -68,7 +68,7 @@
 		methods: {
 			back() {
 				uni.switchTab({
-					url: '/pages/tabbar/index/index '
+					url: '/pages/tabbar/index/index'
 				})
 			},
 			open() {

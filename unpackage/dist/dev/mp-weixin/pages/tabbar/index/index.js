@@ -150,7 +150,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
 //
 //
 //
@@ -170,7 +170,13 @@ var _default =
       activeIndex: 0 };
 
   },
-  onLoad: function onLoad() {
+  onLoad: function onLoad() {var _this = this;
+    uni.$on('labelChange', function (res) {
+      _this.tabList = [];
+      _this.tabIndex = 0;
+      _this.activeIndex = 0;
+      _this.getLabel();
+    });
     this.getLabel();
   },
   methods: {
@@ -181,15 +187,16 @@ var _default =
     tab: function tab(_ref) {var data = _ref.data,index = _ref.index;
       this.activeIndex = index;
     },
-    getLabel: function getLabel() {var _this = this;
+    getLabel: function getLabel() {var _this2 = this;
       this.$uniCloudFunction('get_lable').then(function (res) {var
         data = res.data;
         data.unshift({
           name: '全部' });
 
-        _this.tabList = data;
+        _this2.tabList = data;
       });
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 /* 22 */

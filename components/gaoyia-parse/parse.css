@@ -1,19 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*每个页面公共css */
 /**
  * author: Di (微信小程序开发工程师)
  * organization: WeAppDev(微信小程序开发论坛)(http://weappdev.com)
@@ -28,8 +12,7 @@
  * 请在全局下引入该文件，@import '/static/wxParse.css';
  */
 .wxParse {
-	-webkit-user-select:none;
-	        user-select:none;
+	user-select:none;
 	width: 100%;
 	font-family: Helvetica, "PingFangSC", 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
 	color: #333;
@@ -37,7 +20,7 @@
 	font-size: 14px;
 	text-align:justify;/* //左右两端对齐 */
 }
-.wxParse view,.wxParse uni-view{
+.wxParse view ,.wxParse uni-view{
 	word-break: break-word;
 }
 .wxParse .p {
@@ -50,11 +33,13 @@
   margin: 0;
   padding: 0;
 }
+
 .wxParse .div {
   margin: 0;
   padding: 0;
   display: block;
 }
+
 .wxParse .h1{
   font-size: 2em;
   line-height: 1.2em;
@@ -79,6 +64,7 @@
   font-size: 0.83em;
   margin: 1.67em 0;
 }
+
 .wxParse .h1,
 .wxParse .h2,
 .wxParse .h3,
@@ -89,6 +75,7 @@
 .wxParse .strong{
   font-weight: bolder;
 }
+
 .wxParse .i,
 .wxParse .cite,
 .wxParse .em,
@@ -109,51 +96,59 @@
 .wxParse .pre {
   overflow: auto;
   background: #f5f5f5;
-  padding: 16rpx;
+  padding: 16upx;
   white-space: pre;
-  margin: 1em 0rpx;
-  font-size: 24rpx;
+  margin: 1em 0upx;
+  font-size: 24upx;
 }
 .wxParse .code {
 	overflow: auto;
-	padding: 16rpx;
+	padding: 16upx;
 	white-space: pre;
-	margin: 1em 0rpx;
+	margin: 1em 0upx;
 	background: #f5f5f5;
-	font-size: 24rpx;
+	font-size: 24upx;
 }
+
 .wxParse .big {
   font-size: 1.17em;
 }
+
 .wxParse .small,
 .wxParse .sub,
 .wxParse .sup {
   font-size: 0.83em;
 }
+
 .wxParse .sub {
   vertical-align: sub;
 }
 .wxParse .sup {
   vertical-align: super;
 }
+
 .wxParse .s,
 .wxParse .strike,
 .wxParse .del {
   text-decoration: line-through;
 }
+
 .wxParse .strong,
 .wxParse .text,
 .wxParse .span,
 .wxParse .s {
   display: inline;
 }
+
 .wxParse .a {
   color: deepskyblue;
 }
+
 .wxParse .video {
   text-align: center;
-  margin: 22rpx 0;
+  margin: 22upx 0;
 }
+
 .wxParse .video-video {
   width: 100%;
 }
@@ -166,12 +161,13 @@
   margin-bottom: 0em;/* //与p标签底部padding同时修改 */
   overflow: hidden;
 }
+
 .wxParse .blockquote {
-  margin: 10rpx 0;
-  padding: 22rpx 0 22rpx 22rpx;
+  margin: 10upx 0;
+  padding: 22upx 0 22upx 22upx;
   font-family: Courier, Calibri, "宋体";
   background: #f5f5f5;
-  border-left: 6rpx solid #dbdbdb;
+  border-left: 6upx solid #dbdbdb;
 }
 .wxParse .blockquote .p {
   margin: 0;
@@ -189,16 +185,13 @@
 }
 .wxParse .ol>weixin-parse-template,.wxParse .ul>weixin-parse-template {
   display: list-item;
-  -webkit-box-align: baseline;
-  -webkit-align-items: baseline;
-          align-items: baseline;
+  align-items: baseline;
   text-align: match-parent;
 }
+
 .wxParse .ol>.li,.wxParse .ul>.li {
   display: list-item;
-  -webkit-box-align: baseline;
-  -webkit-align-items: baseline;
-          align-items: baseline;
+  align-items: baseline;
   text-align: match-parent;
 }
 .wxParse .ul .ul, .wxParse .ol .ul {
@@ -207,6 +200,7 @@
 .wxParse .ol .ol .ul, .wxParse .ol .ul .ul, .wxParse .ul .ol .ul, .wxParse .ul .ul .ul {
     list-style-type: square;
 }
+
 .wxParse .u {
   text-decoration: underline;
 }
@@ -256,10 +250,9 @@
 .wxParse  .table .td{
 	border-collapse:collapse;
 	box-sizing: border-box;
-	border: 2rpx solid #dadada;
+	border: 2upx solid #dadada;
 	overflow:auto;
 }
 .wxParse .audio, .wxParse .uni-audio-default{
 	display: block;
 }
-

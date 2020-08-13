@@ -9,7 +9,7 @@
 			:class="{search:isSearch}"
 			:style="{height: `${navBarHeight}px`, width: `${windowWidth}px`}"
 			@click.stop="open">
-				<view class="navbar-content__search-icons">
+				<view v-if="isSearch" class="navbar-content__search-icons" @click="back">
 					<uni-icons type="back" size="22" color="#fff"></uni-icons>
 				</view>
 				<view v-if="!isSearch" class="navbar-search">
@@ -19,7 +19,7 @@
 					<view class="navbar-search_text">uni-app、vue</view>
 				</view>
 				<view v-else class="navbar-search">
-					<input type="text"  class="navbar-search_text" v-model="val" @input="inputChange" placeholder="请输入您要搜索的内容" />
+					<input type="text" class="navbar-search_text" v-model="val" @input="inputChange" placeholder="请输入您要搜索的内容" />
 				</view>
 			</view>
 		</view>
@@ -66,6 +66,11 @@
 			// #endif
 		},
 		methods: {
+			back() {
+				uni.switchTab({
+					url: '/pages/tabbar/index/index '
+				})
+			},
 			open() {
 				if(this.isSearch) return
 				uni.navigateTo({

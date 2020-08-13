@@ -862,6 +862,11 @@ function initProperties(props) {var isBehavior = arguments.length > 1 && argumen
       type: String,
       value: '' };
 
+    // 用于字节跳动小程序模拟抽象节点
+    properties.generic = {
+      type: Object,
+      value: null };
+
     properties.vueSlots = { // 小程序不能直接定义 $slots 的 props，所以通过 vueSlots 转换到 $slots
       type: null,
       value: [],
@@ -1160,14 +1165,17 @@ function handleEvent(event) {var _this = this;
             }
             handler.once = true;
           }
-          ret.push(handler.apply(handlerCtx, processEventArgs(
+          var params = processEventArgs(
           _this.$vm,
           event,
           eventArray[1],
           eventArray[2],
           isCustom,
-          methodName)));
-
+          methodName) ||
+          [];
+          // 参数尾部增加原始事件对象用于复杂表达式内获取额外数据
+          // eslint-disable-next-line no-sparse-arrays
+          ret.push(handler.apply(handlerCtx, params.concat([,,,,,,,,,, event])));
         }
       });
     }
@@ -1803,19 +1811,28 @@ _vue.default.use(_vuex.default);
 
 var store = new _vuex.default.Store({
   state: {
-    historyLists: [] },
+    historyLists: uni.getStorageSync('__history') || [] },
 
   mutations: {
     SET_HISTORY_LISTS: function SET_HISTORY_LISTS(state, history) {
       state.historyLists = history;
+    },
+    CLEAR_HISTORY: function CLEAR_HISTORY(state) {
+      state.historyLists = [];
     } },
 
   actions: {
     set_history: function set_history(_ref, history) {var commit = _ref.commit,state = _ref.state;
+      var historyList = uni.getStorageSync('__history') ? uni.getStorageSync('__history').map(function (item) {return item.name;}) : [];
+      if (historyList.length && historyList.includes(history.name)) return;
       var list = state.historyLists;
       list.unshift(history);
       uni.setStorageSync('__history', list);
       commit('SET_HISTORY_LISTS', list);
+    },
+    clearHistory: function clearHistory(_ref2) {var commit = _ref2.commit;
+      uni.removeStorageSync('__history');
+      commit('CLEAR_HISTORY');
     } } });var _default =
 
 
@@ -8701,7 +8718,7 @@ function internalMixin(Vue) {
   };
 
   Vue.prototype.__map = function(val, iteratee) {
-    //TODO 暂不考虑 string,number
+    //TODO 暂不考虑 string
     var ret, i, l, keys, key;
     if (Array.isArray(val)) {
       ret = new Array(val.length);
@@ -8715,6 +8732,13 @@ function internalMixin(Vue) {
       for (i = 0, l = keys.length; i < l; i++) {
         key = keys[i];
         ret[key] = iteratee(val[key], key, i);
+      }
+      return ret
+    } else if (typeof val === 'number') {
+      ret = new Array(val);
+      for (i = 0, l = val; i < l; i++) {
+        // 第一个参数暂时仍和小程序一致
+        ret[i] = iteratee(i, i);
       }
       return ret
     }
@@ -8855,7 +8879,7 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 84:
+/***/ 91:
 /*!*****************************************************************!*\
   !*** F:/wechat-projects/nui-news/components/uni-icons/icons.js ***!
   \*****************************************************************/

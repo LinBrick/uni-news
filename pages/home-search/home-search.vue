@@ -5,10 +5,10 @@
 			<view v-if="is_history" class="label-box">
 				<view class="label-header">
 					<text class="label-title">搜索历史</text>
-					<text class="label-clear">清空</text>
+					<text class="label-clear" @click="clear">清空</text>
 				</view>
 				<view v-if="historyLists.length" class="label-content">
-					<view class="label-content__item" v-for="item in historyLists" @click="openHistory(item)">{{item.name}}</view>
+					<view class="label-content__item" v-for="(item, index) in historyLists" :key="index" @click="openHistory(item)">{{item.name}}</view>
 				</view>
 				<view v-else class="no-data">
 					没有搜索历史
@@ -64,6 +64,12 @@
 						this.getSearch(value)
 					}, 1000)
 				}
+			},
+			clear() {
+				this.$store.dispatch('clearHistory')
+				uni.showToast({
+					title: '清空完成'
+				})
 			},
 			getSearch(value) {
 				if(!value) {

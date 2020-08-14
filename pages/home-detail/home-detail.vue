@@ -41,14 +41,14 @@
 				<uni-icons type="compose" size="16" color="#F07373"></uni-icons>
 			</view>
 			<view class="detail-bottom__icons">
-				<view class="detail-bottom__icons-box">
+				<view class="detail-bottom__icons-box" @click="open">
 					<uni-icons type="chat" size="16" color="#F07373"></uni-icons>
 				</view>
-				<view class="detail-bottom__icons-box">
-					<uni-icons type="heart" size="16" color="#F07373"></uni-icons>
+				<view class="detail-bottom__icons-box" @click="likeTap(formData._id)">
+					<uni-icons :type="formData.is_like?'heart-filled':'heart'" size="22" color="#F07373"></uni-icons>
 				</view>
-				<view class="detail-bottom__icons-box">
-					<uni-icons type="hand-thumbsup" size="16" color="#F07373"></uni-icons>
+				<view class="detail-bottom__icons-box" @click="thumbsup(formData._id)">
+					<uni-icons :type="formData.is_thumbs_up?'hand-thumbsup-filled':'hand-thumbsup' " size="22" color="#F07373"></uni-icons>
 				</view>
 			</view>
 		</view>
@@ -93,6 +93,48 @@
 					uni.$emit('update_author')
 					uni.showToast({
 						title:this.formData.is_author_like?'关注作者成功':'取消关注作者',
+						icon:'none'
+					})
+				})
+			},
+			// 打开评论列表
+			open(){
+				uni.navigateTo({
+					url:'../detail-comments/detail-comments?id='+this.formData._id
+				})
+			},
+			// 收藏
+			likeTap(article_id){
+				this.setUpadteLike(article_id)
+			},
+			// 点赞
+			thumbsup(article_id){
+				this.setUpdateThumbs(article_id)
+			},
+			setUpdateThumbs(article_id){
+				uni.showLoading()
+				this.$uniCloudFunction('update_thumbsup', {
+					article_id
+				}).then(res=>{
+					uni.hideLoading()
+					this.formData.is_thumbs_up = true
+					this.formData.thumbs_up_count++
+					uni.showToast({
+						title:res.msg
+					})
+				})
+			},
+			// 收藏文章 
+			setUpadteLike(article_id){
+				uni.showLoading()
+				this.$uniCloudFunction('update_like', {
+					article_id
+				}).then(res=>{
+					uni.hideLoading()
+					this.formData.is_like = !this.formData.is_like
+					uni.$emit('update_article','follow')
+					uni.showToast({
+						title:this.formData.is_like ?'收藏成功':'取消收藏',
 						icon:'none'
 					})
 				})

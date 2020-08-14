@@ -41,6 +41,16 @@
 				this.getList(this.activeIndex)
 			}
 		},
+		created() {
+			// TODO tab 还没有赋值
+			uni.$on('update_article',(e)=>{
+				if(e === 'follow'){
+					this.listCatchData = {}
+					this.load = {}
+					this.getList(this.activeIndex)
+				}
+			})
+		},
 		methods: {
 			loadmore() {
 				if(this.load[this.activeIndex].loading === 'noMore') return

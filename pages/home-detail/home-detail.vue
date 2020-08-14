@@ -20,11 +20,18 @@
 		</view>
 		<view class="detail-content">
 			<view class="detail-html">
-				<u-parse :content="formData.content" :noData="noData"></u-parse>
+				<!-- <u-parse :content="formData.content" :noData="noData"></u-parse> -->
+				暂时隐藏内容
+			</view>
+			<view class="detail-comment">
+				<view class="comment-title">最新评论</view>
+				<view class="comment-content" v-for="item in commentsList" :key="item.comment_id">
+					<comments-box :comments="item" @reply="reply"></comments-box>
+				</view>
 			</view>
 		</view>
 		<view class="detail-bottom">
-			<view class="detail-bottom__input">
+			<view class="detail-bottom__input" @click="openComment">
 				<text>谈谈你的看法</text>
 				<uni-icons type="compose" size="16" color="#F07373"></uni-icons>
 			</view>
@@ -40,6 +47,8 @@
 				</view>
 			</view>
 		</view>
+		
+		<release ref="popup" @submit="submit"></release>
 	</view>
 </template>
 
@@ -52,13 +61,16 @@
 		data() {
 			return {
 				formData: {},
-				noData: '<p style="text-align:center;color:#666;">详情加载中...</p>'
+				noData: '<p style="text-align:center;color:#666;">详情加载中...</p>',
+				commentsValue: '',
+				replyFormData: {},
+				commentsList: []
 			}
 		},
 		onLoad(query) {
 			this.formData = JSON.parse(query.params)
-			console.log(this.formData)
 			this.getDetail()
+			this.getComments()
 		},
 		methods: {
 			getDetail() {
@@ -67,7 +79,56 @@
 				}).then(res => {
 					this.formData = res.data
 				})
-			}
+			},
+			// 打开评论发布窗口
+			openComment(){
+				this.$refs.popup.open()
+			},
+			// 关闭弹窗
+			close(){
+				this.$refs.popup.close()
+			},
+			// 发布
+			submit(content){
+				this.setUpdateComment({content,...this.replyFormData})
+			},
+			// 回复评论
+			reply(e){
+				this.replyFormData = {
+					"comment_id":e.comments.comment_id,
+					"is_reply": e.is_reply
+				}
+				if(e.comments.reply_id){
+					this.replyFormData.reply_id = e.comments.reply_id
+				}
+				this.openComment()
+			},
+			setUpdateComment(content){
+				const formdata ={
+					article_id:this.formData._id,
+					...content
+				}
+				uni.showLoading()
+				this.$uniCloudFunction('update_comment', formdata).then((res)=>{
+					uni.hideLoading()
+					uni.showToast({
+						title:'评论发布成功'
+					})
+					this.getComments()
+					this.close()
+					this.replyFormData = {}
+				})
+			},
+			// 请求评论内容
+			getComments(){
+				this.$uniCloudFunction('get_comments', {
+					article_id: this.formData._id
+				}).then(res=>{
+					console.log(res);
+					const {data} = res
+					this.commentsList = data
+				})
+			},
 		}
 	}
 </script>

@@ -1,5 +1,5 @@
 {
-    "name" : "nui-news",
+    "name" : "nui新闻",
     "appid" : "__UNI__9DEFB9C",
     "description" : "",
     "versionName" : "1.0.0",
@@ -50,16 +50,21 @@
             /* ios打包配置 */
             "ios" : {},
             /* SDK配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "ad" : {}
+            }
         }
     },
     /* 快应用特有相关 */
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wx2d301f4f998886be",
         "setting" : {
-            "urlCheck" : false
+            "urlCheck" : true,
+            "es6" : true,
+            "postcss" : true,
+            "minified" : true
         },
         "usingComponents" : true
     },
@@ -78,13 +83,13 @@
     "h5" : {
         "title" : "uni新闻网",
         "router" : {
-            "base" : "./"
+            "base" : "",
+            "mode" : "hash"
         },
         "optimization" : {
             "treeShaking" : {
                 "enable" : true
             }
-        },
-        "domain" : "https://ll527563266.github.io/uni-news/"
+        }
     }
 }

@@ -2,7 +2,9 @@
 	<view class="navbar">
 		<view class="navbar-fixed">
 			<!-- 状态栏 -->
-			<view :style="{height: `${statusBarHeight}px`}"></view>
+			<!-- #ifndef MP-ALIPAY -->
+			<view :style="{height:statusBarHeight+'px'}"></view>
+			<!-- #endif -->
 			<!-- 导航栏内容 -->
 			<view 
 			class="navbar-content" 
@@ -23,7 +25,7 @@
 				</view>
 			</view>
 		</view>
-		<view :style="{height: `${statusBarHeight+navBarHeight}px`}"></view>
+		<!-- <view :style="{height: `${statusBarHeight+navBarHeight}px`}"></view> -->
 	</view>
 </template>
 
@@ -54,15 +56,21 @@
 		},
 		created() {
 			// 获取手机系统信息
-			const info = uni.getSystemInfo()
+			const info = uni.getSystemInfoSync()
+			// 设置状态栏高度
 			this.statusBarHeight = info.statusBarHeight
 			this.windowWidth = info.windowWidth
-			// #ifndef H5 || APP-PLUS || Mp-AlIPAY
+			// h5 app mp-alipay
+			// #ifndef H5 || APP-PLUS || MP-ALIPAY
 			// 获取胶囊的位置
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
+			console.log(menuButtonInfo);
 			// (胶囊底部高度 - 状态栏的高度) + (胶囊顶部高度 - 状态栏内的高度) = 导航栏的高度
 			this.navBarHeight = (menuButtonInfo.bottom - info.statusBarHeight) + (menuButtonInfo.top - info.statusBarHeight)
 			this.windowWidth = menuButtonInfo.left
+			// #endif
+			// #ifdef MP-ALIPAY
+			this.statusBarHeight = 0
 			// #endif
 		},
 		methods: {

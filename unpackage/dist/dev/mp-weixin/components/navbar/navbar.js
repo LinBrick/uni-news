@@ -147,6 +147,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 var _default =
 {
   props: {
@@ -174,15 +176,21 @@ var _default =
 
   created: function created() {
     // 获取手机系统信息
-    var info = uni.getSystemInfo();
+    var info = uni.getSystemInfoSync();
+    // 设置状态栏高度
     this.statusBarHeight = info.statusBarHeight;
     this.windowWidth = info.windowWidth;
+    // h5 app mp-alipay
 
     // 获取胶囊的位置
     var menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+    console.log(menuButtonInfo);
     // (胶囊底部高度 - 状态栏的高度) + (胶囊顶部高度 - 状态栏内的高度) = 导航栏的高度
     this.navBarHeight = menuButtonInfo.bottom - info.statusBarHeight + (menuButtonInfo.top - info.statusBarHeight);
     this.windowWidth = menuButtonInfo.left;
+
+
+
 
   },
   methods: {

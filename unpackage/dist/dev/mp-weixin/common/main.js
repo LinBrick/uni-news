@@ -93,14 +93,14 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
 {
-  onLaunch: function onLaunch() {
-    console.log('App Launch');
-  },
-  onShow: function onShow() {
-    console.log('App Show');
-  },
-  onHide: function onHide() {
-    console.log('App Hide');
+  onLaunch: function onLaunch() {var _this = this;
+    this.$uniCloudFunction('get_user', {
+      user_id: '5f32282c35a9a80001914e13' }).
+    then(function (res) {var
+      data = res.data;
+      _this.$store.dispatch('set_userInfo', data);
+      console.log(data);
+    });
   } };exports.default = _default;
 
 /***/ }),

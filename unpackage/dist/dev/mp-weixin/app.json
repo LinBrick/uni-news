@@ -5,7 +5,10 @@
     "pages/tabbar/my/my",
     "pages/home-search/home-search",
     "pages/home-label/home-label",
-    "pages/home-detail/home-detail"
+    "pages/home-detail/home-detail",
+    "pages/detail-comments/detail-comments",
+    "pages/my-article/my-article",
+    "pages/feedback/feedback"
   ],
   "subPackages": [],
   "window": {
@@ -39,5 +42,6 @@
       }
     ]
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap67.json"
 }

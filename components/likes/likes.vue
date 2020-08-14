@@ -1,5 +1,5 @@
 <template>
-	<view class="icons" @click="likeTab">
+	<view class="icons" @click.stop="likeTab">
 		<uni-icons size="20" color="#f07373" :type="isLike"></uni-icons>
 	</view>
 </template>
@@ -12,6 +12,10 @@
 				default() {
 					return {}
 				}
+			},
+			types: {
+				type: String,
+				default: ''
 			}
 		},
 		computed: {
@@ -48,6 +52,7 @@
 						title: this.like ? '收藏成功' : '取消收藏',
 						icon: 'none'
 					})
+					uni.$emit('update_article', this.types)
 				}).catch(res => {
 					uni.hideLoading()
 				})

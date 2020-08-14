@@ -17,11 +17,16 @@
 					<text>{{formData.thumbs_up_count}}赞</text>
 				</view>
 			</view>
+			<button
+				class="detail-header__button" 
+				type="default" 
+				@click="follow(formData.author.id)">
+					{{formData.is_author_like?'取消关注':'关注'}}
+			</button>
 		</view>
 		<view class="detail-content">
 			<view class="detail-html">
-				<!-- <u-parse :content="formData.content" :noData="noData"></u-parse> -->
-				暂时隐藏内容
+				<u-parse :content="formData.content" :noData="noData"></u-parse>
 			</view>
 			<view class="detail-comment">
 				<view class="comment-title">最新评论</view>
@@ -73,6 +78,25 @@
 			this.getComments()
 		},
 		methods: {
+			// 关注
+			follow(author_id){
+				this.setUpdateAuhtor(author_id)
+			},
+			// 关注作者
+			setUpdateAuhtor(author_id){
+				uni.showLoading()
+				this.$uniCloudFunction('update_author', {
+					author_id
+				}).then(res=>{
+					uni.hideLoading()
+					this.formData.is_author_like = !this.formData.is_author_like
+					uni.$emit('update_author')
+					uni.showToast({
+						title:this.formData.is_author_like?'关注作者成功':'取消关注作者',
+						icon:'none'
+					})
+				})
+			},
 			getDetail() {
 				this.$uniCloudFunction('get_detail', {
 					article_id: this.formData._id

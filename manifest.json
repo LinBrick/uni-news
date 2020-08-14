@@ -90,18 +90,34 @@
             "treeShaking" : {
                 "enable" : true
             }
+        },
+        "domain" : "http://120.79.150.89",
+        "devServer" : {
+            "port" : 80, //端口号
+            "disableHostCheck" : true,
+            "proxy" : {
+                "/api" : {
+                    "target" : "https://api.bspapp.com", //目标接口域名
+                    "changeOrigin" : true, //是否跨域
+                    "secure" : false // 设置支持https协议的代理
+                }
+            }
         }
     },
-	"safearea": { //安全区域配置，仅iOS平台生效  
-		"background": "#CCCCCC", //安全区域外的背景颜色，默认值为"#FFFFFF"  
-		"bottom": { // 底部安全区域配置  
-			"offset": "none|auto" // 底部安全区域偏移，"none"表示不空出安全区域，"auto"自动计算空出安全区域，默认值为"none"  
-		},
-		"left": { //左侧安全区域配置（横屏显示时有效）  
-			"offset": "none|auto"
-		},
-		"right": { //右侧安全区域配置（横屏显示时有效）  
-			"offset": "none|auto"
-		}
-	}
+    "safearea" : {
+        //安全区域配置，仅iOS平台生效  
+        "background" : "#CCCCCC", //安全区域外的背景颜色，默认值为"#FFFFFF"  
+        "bottom" : {
+            // 底部安全区域配置  
+            "offset" : "none|auto" // 底部安全区域偏移，"none"表示不空出安全区域，"auto"自动计算空出安全区域，默认值为"none"  
+        },
+        "left" : {
+            //左侧安全区域配置（横屏显示时有效）  
+            "offset" : "none|auto"
+        },
+        "right" : {
+            //右侧安全区域配置（横屏显示时有效）  
+            "offset" : "none|auto"
+        }
+    }
 }

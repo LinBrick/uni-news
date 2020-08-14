@@ -36,6 +36,14 @@
             "path" : "pages/detail-comments/detail-comments",
             "style" : {}
         }
+        ,{
+            "path" : "pages/my-article/my-article",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/feedback/feedback",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

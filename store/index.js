@@ -5,9 +5,13 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	state: {
+		userInfo: uni.getStorageSync('USERINFO') || {},
 		historyLists: uni.getStorageSync('__history') || []
 	},
 	mutations: {
+		SET_USER_INFO(state, userInfo) {
+			state.userInfo = userInfo
+		},
 		SET_HISTORY_LISTS(state, history) {
 			state.historyLists = history
 		},
@@ -16,6 +20,12 @@ const store = new Vuex.Store({
 		}
 	},
 	actions: {
+		set_userInfo({
+			commit
+		}, userInfo) {
+			uni.setStorageSync('USERINFO', userInfo)
+			commit('SET_USER_INFO', userInfo)
+		},
 		set_history({ commit,state }, history) {
 			const historyList = uni.getStorageSync('__history') ? uni.getStorageSync('__history').map(item => item.name) : []
 			if(historyList.length && historyList.includes(history.name)) return

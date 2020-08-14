@@ -1,13 +1,13 @@
 <script>
 	export default {
 		onLaunch: function() {
-			console.log('App Launch')
-		},
-		onShow: function() {
-			console.log('App Show')
-		},
-		onHide: function() {
-			console.log('App Hide')
+			this.$uniCloudFunction('get_user', {
+				user_id: '5f32282c35a9a80001914e13'
+			}).then((res) => {
+				const { data } = res
+				this.$store.dispatch('set_userInfo', data)
+				console.log(data)
+			})
 		}
 	}
 </script>

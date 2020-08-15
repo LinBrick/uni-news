@@ -186,6 +186,7 @@ var _vuex = __webpack_require__(/*! vuex */ 15);function ownKeys(object, enumera
       _this.activeIndex = 0;
       _this.getLabel();
     });
+    this.getLabel();
   },
   methods: {
     change: function change(current) {

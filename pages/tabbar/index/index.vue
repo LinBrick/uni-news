@@ -34,6 +34,7 @@
 				this.activeIndex = 0
 				this.getLabel()
 			})
+			this.getLabel()
 		},
 		methods: {
 			change(current) {

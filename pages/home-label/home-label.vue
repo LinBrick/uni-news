@@ -3,31 +3,30 @@
 		<view class="label-box">
 			<view class="label-header">
 				<view class="label-title">我的标签</view>
-				<view class="label-edit" @click="editLable">{{editStatus}}</view>
+				<view class="label-edit" @click="editLabel">{{is_edit?'完成':'编辑'}}</view>
 			</view>
-			<uni-load-more v-show="loading" status="loading" iconType="snow"></uni-load-more>
-			<view v-show="!loading" class="label-content">
+			<uni-load-more v-if="loading" status="loading" iconType="snow"></uni-load-more>
+			<view v-if="!loading" class="label-content">
 				<view class="label-content__item" v-for="(item,index) in labelList" :key="item._id">
 					{{item.name}}
-					<uni-icons v-show="isEdit" class="icons-close" type="clear" size="14" color="red" @click="del(index)"></uni-icons>
+					<uni-icons v-if="is_edit" class="icons-close" type="clear" size="20" color="red" @click="del(index)"></uni-icons>
 				</view>
-				<view v-show="labelList.length === 0" class="no-data">
+				<view v-if="labelList.length === 0 && !loading" class="no-data">
 					当前没有数据
 				</view>
 			</view>
+
 		</view>
 		<view class="label-box">
 			<view class="label-header">
 				<view class="label-title">标签推荐</view>
 			</view>
-			<uni-load-more v-show="loading" status="loading" iconType="snow"></uni-load-more>
-			<view v-show="!loading" class="label-content">
-				<view class="label-content__item" v-for="(item,index) in list" :key="item._id" @click="add(index)">
-					{{item.name}}
-				</view>
-				<view v-show="list.length === 0" class="no-data">
-					当前没有数据
-				</view>
+			<uni-load-more v-if="loading" status="loading" iconType="snow"></uni-load-more>
+			<view v-if="!loading" class="label-content">
+				<view class="label-content__item" v-for="(item,index) in list" :key="item._id" @click="add(index)">{{item.name}}</view>
+			</view>
+			<view v-if="list.length === 0  && !loading" class="no-data">
+				当前没有数据
 			</view>
 		</view>
 	</view>
@@ -37,42 +36,31 @@
 	export default {
 		data() {
 			return {
-				isEdit: false,
+				is_edit: false,
 				labelList: [],
 				list: [],
 				loading: true
 			}
 		},
-		computed: {
-			editStatus() {
-				return this.isEdit ? '完成' : '编辑'
-			}
-		},
 		onLoad() {
-			this.getLable()
+			// 自定义事件
+			// this.$emit() 
+			// 自定义事件，只能在打开的页面触发 
+			this.getLabel()
 		},
 		methods: {
-			editLable() {
-				if(this.isEdit) {
-					this.isEdit = false
+			editLabel() {
+				// this.is_edit = !this.is_edit
+				// true 正在编辑
+				if (this.is_edit) {
+					this.is_edit = false
 					this.setUpdateLabel(this.labelList)
 				} else {
-					this.isEdit = true
+					this.is_edit = true
 				}
 			},
-			getLable() {
-				this.loading = true
-				this.$uniCloudFunction('get_lable', {
-					type: 'all'
-				}).then(res => {
-					const { data } = res
-					this.labelList = data.filter(item => item.current)
-					this.list = data.filter(item => !item.current)
-					this.loading = false
-				})
-			},
 			add(index) {
-				if(!this.isEdit) return
+				if (!this.is_edit) return
 				this.labelList.push(this.list[index])
 				this.list.splice(index, 1)
 			},
@@ -81,19 +69,35 @@
 				this.labelList.splice(index, 1)
 			},
 			setUpdateLabel(label) {
-				const newLableList = label.map(item => item._id)
+				let newArrIds = []
+				label.forEach(item => {
+					newArrIds.push(item._id)
+				})
 				uni.showLoading()
-				this.$uniCloudFunction('update_label', {
-					label: newLableList
-				}).then(res => {
+				console.log(newArrIds);
+				this.$api.update_label({
+					label: newArrIds
+				}).then((res) => {
 					uni.hideLoading()
 					uni.showToast({
 						title: '更新成功',
 						icon: 'none'
 					})
 					uni.$emit('labelChange')
-				}).catch(() => {
-					uni.hideLoading()
+				})
+			},
+			getLabel() {
+				this.loading = true
+				this.$api.get_label({
+					type: 'all'
+				}).then((res) => {
+					console.log(res);
+					const {
+						data
+					} = res
+					this.labelList = data.filter(item => item.current)
+					this.list = data.filter(item => !item.current)
+					this.loading = false
 				})
 			}
 		}

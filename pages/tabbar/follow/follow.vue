@@ -41,6 +41,7 @@
 		onLoad() {
 			// 自定义事件，$on 只能 在打开的页面触发
 			uni.$on('update_article', () => {
+				console.log('关注页面触发');
 				this.getFollow()
 			})
 			uni.$on('update_author', () => {
@@ -57,7 +58,8 @@
 				this.activeIndex = index
 			},
 			getFollow() {
-				this.$uniCloudFunction('get_follow').then(res => {
+				this.$api.get_follow().then(res => {
+					console.log(res);
 					const {
 						data
 					} = res
@@ -66,7 +68,7 @@
 				})
 			},
 			getAuhtor() {
-				this.$uniCloudFunction('get_author').then(res => {
+				this.$api.get_author().then(res => {
 					console.log(res);
 					const {
 						data

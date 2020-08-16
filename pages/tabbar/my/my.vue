@@ -2,26 +2,26 @@
 	<view>
 		<view class="my-header">
 			<view class="my-header__background">
-				<image :src="userInfo.avatar" mode="aspectFill"></image>
+				<image :src="userinfo.avatar" mode="aspectFill"></image>
 			</view>
 			<view class="my-header__logo">
 				<view class="my-header__logo-box">
-					<image :src="userInfo.avatar" mode="aspectFill"></image>
+					<image :src="userinfo.avatar" mode="aspectFill"></image>
 				</view>
-				<text class="my-header__name">{{userInfo.author_name}}</text>
+				<text class="my-header__name">{{userinfo.author_name}}</text>
 			</view>
 			<view class="my-header__info">
 				<view class="my-header__info-box">
-					<text class="my-header__info-title">关注</text>
-					<text>{{userInfo.author_likes_ids.length}}</text>
+					<text class="my-header__info-title">被关注</text>
+					<text>{{userinfo.follow_count}}</text>
 				</view>
 				<view class="my-header__info-box">
 					<text class="my-header__info-title">粉丝</text>
-					<text>{{userInfo.fans_count}}</text>
+					<text>{{userinfo.fans_count}}</text>
 				</view>
 				<view class="my-header__info-box">
 					<text class="my-header__info-title">积分</text>
-					<text>{{userInfo.integral_count || 0}}</text>
+					<text>{{userinfo.integral_count || 0}}</text>
 				</view>
 			</view>
 		</view>
@@ -54,7 +54,10 @@
 			}
 		},
 		computed:{
-			...mapState(['userInfo'])
+			...mapState(['userinfo'])
+		},
+		onLoad() {
+			// console.log(this.userinfo);
 		},
 		methods: {
 			open(){

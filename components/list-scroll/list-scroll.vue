@@ -1,7 +1,9 @@
 <template>
 	<view class="scroll">
-		<scroll-view  class="list-scroll" scroll-y @scrolltolower="loadMore">
-			<slot></slot>
+		<scroll-view class="list-scroll" scroll-y @scrolltolower="loadmore">
+			<view>
+				<slot></slot>
+			</view>
 		</scroll-view>
 	</view>
 </template>
@@ -10,11 +12,11 @@
 	export default {
 		data() {
 			return {
-				
+
 			};
 		},
-		methods: {
-			loadMore() {
+		methods:{
+			loadmore(){
 				this.$emit('loadmore')
 			}
 		}
@@ -23,14 +25,14 @@
 
 <style lang="scss">
 	.scroll {
-		flex:1;
+		flex: 1;
+		height: 100%;
 		overflow: hidden;
 		box-sizing: border-box;
-		height: 100%;
 		.list-scroll {
 			height: 100%;
 			display: flex;
-			flex-direction: colum;
+			flex-direction: column;
 		}
 	}
 </style>

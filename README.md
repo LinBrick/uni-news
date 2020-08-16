@@ -1,23 +1,9 @@
-## 线上地址
+# uni-app 实战-前端全流程开发新闻资讯类应用
+大家好，我是mehaotian ，这是我的第一门实战课程 ，这门课程通过一个简单的咨询类项目，可以帮助同学们快速入门 uni-app 。
 
-[示例](http://4t5.gitee.io/uni-news)
+本项目代码通过分支的形式去展现，每个小节会根据课程章节进行命名。
 
-## 目录结构
+学习到那个小节，同学们可以拉取当前小节的代码，进行阅读、比对。
 
+master 主分支为项目的完整代码。可以直接克隆到本地，配置好自己的云开发环境，预览完整效果。
 
-```bash
-├── cloudfunctions-aliyun      # 云函数
-├── common                     # 常用的文件
-│   │── api                    # 请求接口函数
-├── components                 # 自定义组件
-├── pages                      # 页面存放目录
-├── static                     # 静态资源 (会被直接复制)
-├── store                      # 全局 vuex store
-├── unpackage                  # 编译后的文件存放目录
-├── utils                      # 公用的工具类
-├── App.vue                    # 入口页面
-├── main.js                    # 入口文件 加载组件 初始化等
-├── manifest.json              # 项目配置
-├── pages.json                 # 页面配置
-├── uni.scss                   # sass常用变量
-```

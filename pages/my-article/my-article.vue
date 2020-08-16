@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<uni-load-more v-show="lists.length === 0" status="loading"></uni-load-more>
+		<uni-load-more v-if="lists.length === 0" status="loading"></uni-load-more>
 		<list-card v-for="item in lists" :key="item.id" :item="item"></list-card>
 	</view>
 </template>
@@ -17,7 +17,8 @@
 		},
 		methods: {
 			getMyArticle() {
-				this.$uniCloudFunction('get_my_article').then(res => {
+				this.$api.get_my_article().then(res => {
+					console.log(res);
 					const {
 						data
 					} = res

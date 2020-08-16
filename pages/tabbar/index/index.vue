@@ -1,7 +1,8 @@
 <template>
 	<view class="home">
+		<!-- 自定义导航栏 -->
 		<navbar></navbar>
-		<tab :list="tabList" :tabIndex="tabIndex" @tab="tab"></tab>
+		<tab :list="tabList" :tabIndex="tabIndex"  @tab="tab"></tab>
 		<view class="home-list">
 			<list :tab="tabList" :activeIndex="activeIndex" @change="change"></list>
 		</view>
@@ -9,49 +10,57 @@
 </template>
 
 <script>
-	import { mapState } from 'vuex'
+	import {mapState} from 'vuex'
+	// easyCom components/组件名/组件名.vue 局部引入
 	export default {
 		data() {
 			return {
 				title: 'Hello',
 				tabList: [],
-				tabIndex: 0,
-				activeIndex: 0
+				tabIndex:0,
+				activeIndex:0
 			}
 		},
-		computed: {
-			...mapState(['userInfo'])
+		computed:{
+			...mapState(['userinfo'])
 		},
-		watch: {
-			userInfo(newVal) {
+		watch:{
+			userinfo(newVal){
 				this.getLabel()
 			}
 		},
 		onLoad() {
-			uni.$on('labelChange', (res) => {
+			uni.$on('labelChange',(res)=>{
 				this.tabList = []
 				this.tabIndex = 0
 				this.activeIndex = 0
 				this.getLabel()
 			})
-			this.getLabel()
 		},
 		methods: {
-			change(current) {
+			change(current){
 				this.tabIndex = current
 				this.activeIndex = current
+				// console.log('当前swiper的值：',current);
 			},
-			tab({data, index}) {
+			tab({data,index}){
+				console.log(data,index);
 				this.activeIndex = index
 			},
 			getLabel() {
-				this.$uniCloudFunction('get_lable').then(res => {
-					const { data } = res
+				// 调用云函数方法
+				this.$api.get_label().then((res) => {
+					const {
+						data
+					} = res
+					console.log('标签 ',data);
 					data.unshift({
-						name: '全部'
+						name:'全部'
 					})
 					this.tabList = data
+					// 	console.log(this.tabList);
 				})
+
 			}
 		}
 	}

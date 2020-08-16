@@ -25,7 +25,6 @@
 </template>
 
 <script>
-	import { randomString } from '@/utils/index.js'
 	export default {
 		data() {
 			return {
@@ -51,6 +50,7 @@
 								})
 							}
 						})
+						console.log(res);
 					}
 				})
 			},
@@ -71,15 +71,14 @@
 				})
 			},
 			async uploadFiles(filePath){
-				console.log(filePath)
 				const result = await uniCloud.uploadFile({
-					filePath: filePath,
-					cloudPath: `${randomString()}.jpg`
+					filePath:filePath
 				})
+				console.log(result);
 				return result.fileID
 			},
 			updateFeedback({content,feedbackImages}){
-				this.$uniCloudFunction('update_feedback', {content,feedbackImages}).then(res=>{
+				this.$api.update_feedback({content,feedbackImages}).then(res=>{
 					uni.hideLoading()
 					uni.showToast({
 						title:"反馈提交成功",
@@ -89,7 +88,7 @@
 						uni.switchTab({
 							url:'/pages/tabbar/my/my'
 						})
-					},1000)
+					},2000)
 				}).catch(()=>{
 					uni.hideLoading()
 					uni.showToast({

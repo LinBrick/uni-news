@@ -1,11 +1,9 @@
 import Vue from 'vue'
 import App from './App'
-import uniCloudFunction from './common/api'
+import api from './common/api'
 import store from './store'
-
 Vue.config.productionTip = false
-Vue.prototype.$uniCloudFunction = uniCloudFunction
-
+Vue.prototype.$api = api
 App.mpType = 'app'
 
 const app = new Vue({

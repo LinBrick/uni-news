@@ -1,6 +1,6 @@
 <template>
-	<view class="icons" @click.stop="likeTab">
-		<uni-icons size="20" color="#f07373" :type="isLike"></uni-icons>
+	<view class="icons" @click.stop="likeTap">
+		<uni-icons size="20" color="#f07373" :type="like?'heart-filled':'heart'"></uni-icons>
 	</view>
 </template>
 
@@ -9,18 +9,13 @@
 		props: {
 			item: {
 				type: Object,
-				default() {
+				default () {
 					return {}
 				}
 			},
 			types: {
 				type: String,
 				default: ''
-			}
-		},
-		computed: {
-			isLike() {
-				return this.like ? 'heart-filled' : 'heart'
 			}
 		},
 		data() {
@@ -37,14 +32,15 @@
 			this.like = this.item.is_like
 		},
 		methods: {
-			likeTab() {
+			likeTap() {
 				this.like = !this.like
 				this.setUpdateLikes()
+				console.log('收藏成功');
 			},
 			setUpdateLikes() {
 				uni.showLoading()
-				this.$uniCloudFunction('update_like', {
-					user_id: '5f32282c35a9a80001914e13',
+				this.$api.update_like({
+					user_id: '5e76254858d922004d6c9cdc',
 					article_id: this.item._id
 				}).then(res => {
 					uni.hideLoading()
@@ -52,8 +48,10 @@
 						title: this.like ? '收藏成功' : '取消收藏',
 						icon: 'none'
 					})
-					uni.$emit('update_article', this.types)
-				}).catch(res => {
+					uni.$emit('update_article',this.types)
+					console.log(res);
+
+				}).catch(() => {
 					uni.hideLoading()
 				})
 			}
@@ -61,7 +59,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style>
 	.icons {
 		position: absolute;
 		right: 0;

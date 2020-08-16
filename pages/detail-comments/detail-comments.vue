@@ -21,6 +21,7 @@
 		},
 		onLoad(query) {
 			this.article_id = query.id
+			console.log(query);
 			this.getComments()
 		},
 		/**
@@ -56,6 +57,7 @@
 				if(e.comments.reply_id){
 					this.replyFormData.reply_id = e.comments.reply_id
 				}
+				console.log(this.replyFormData);
 				this.openComment()
 			},
 			/**
@@ -71,8 +73,10 @@
 				this.commentsList =  []
 				this.page = 1 
 				this.loading = 'loading'
+				// console.log(formdata);
 				uni.showLoading()
-				this.$uniCloudFunction('update_comment', formdata).then((res)=>{
+				this.$api.update_comment(formdata).then((res)=>{
+					console.log(res);
 					uni.hideLoading()
 					uni.showToast({
 						title:'评论发布成功'
@@ -86,7 +90,7 @@
 			 * 获取评论
 			 */
 			getComments() {
-				this.$uniCloudFunction('get_comments', {
+				this.$api.get_comments({
 					article_id: this.article_id,
 					page: this.page,
 					pageSize: this.pageSize
@@ -101,6 +105,7 @@
 					// 对象复制
 					let oldFormData = JSON.parse(JSON.stringify(this.commentsList))
 					oldFormData.push(...data)
+					console.log(res);
 					this.commentsList = oldFormData
 				})
 			}

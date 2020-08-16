@@ -1,13 +1,24 @@
 <script>
 	export default {
 		onLaunch: function() {
-			this.$uniCloudFunction('get_user', {
-				user_id: '5f32282c35a9a80001914e13'
+			console.log('App Launch')
+			// 5e76254858d922004d6c9cdc
+			// 请求接口，异步
+			this.$api.get_user({
+				user_id: '5e76254858d922004d6c9cdc'
 			}).then((res) => {
-				const { data } = res
-				this.$store.dispatch('set_userInfo', data)
-				console.log(data)
+				// console.log(res);
+				const {
+					data
+				} = res
+				this.$store.dispatch('set_userinfo', data)
 			})
+		},
+		onShow: function() {
+			console.log('App Show')
+		},
+		onHide: function() {
+			console.log('App Hide')
 		}
 	}
 </script>

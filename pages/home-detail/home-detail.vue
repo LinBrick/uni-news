@@ -13,16 +13,11 @@
 				</view>
 				<view class="detail-header__content-info">
 					<text>{{formData.create_time}}</text>
-					<text>{{formData.brown_count}}浏览</text>
-					<text>{{formData.thumbs_up_count}}赞</text>
+					<text>{{formData.browse_count}} 浏览</text>
+					<text>{{formData.thumbs_up_count}} 赞</text>
 				</view>
 			</view>
-			<button
-				class="detail-header__button" 
-				type="default" 
-				@click="follow(formData.author.id)">
-					{{formData.is_author_like?'取消关注':'关注'}}
-			</button>
+			<button class="detail-header__button" type="default" @click="follow(formData.author.id)">{{formData.is_author_like?'取消关注':'关注'}}</button>
 		</view>
 		<view class="detail-content">
 			<view class="detail-html">
@@ -42,7 +37,7 @@
 			</view>
 			<view class="detail-bottom__icons">
 				<view class="detail-bottom__icons-box" @click="open">
-					<uni-icons type="chat" size="16" color="#F07373"></uni-icons>
+					<uni-icons type="chat" size="22" color="#F07373"></uni-icons>
 				</view>
 				<view class="detail-bottom__icons-box" @click="likeTap(formData._id)">
 					<uni-icons :type="formData.is_like?'heart-filled':'heart'" size="22" color="#F07373"></uni-icons>
@@ -52,24 +47,24 @@
 				</view>
 			</view>
 		</view>
-		
 		<release ref="popup" @submit="submit"></release>
 	</view>
 </template>
 
 <script>
 	import uParse from '@/components/gaoyia-parse/parse.vue'
+
 	export default {
-		components: {
+		components:{
 			uParse
 		},
 		data() {
 			return {
 				formData: {},
-				noData: '<p style="text-align:center;color:#666;">详情加载中...</p>',
-				commentsValue: '',
-				replyFormData: {},
-				commentsList: []
+				noData:'<p style="text-align:center;color:#666">详情加载中...</p>',
+				commentsList:[],
+				replyFormData:{},
+				showPopup:false
 			}
 		},
 		onLoad(query) {
@@ -78,73 +73,27 @@
 			this.getComments()
 		},
 		methods: {
-			// 关注
-			follow(author_id){
-				this.setUpdateAuhtor(author_id)
-			},
-			// 关注作者
-			setUpdateAuhtor(author_id){
-				uni.showLoading()
-				this.$uniCloudFunction('update_author', {
-					author_id
-				}).then(res=>{
-					uni.hideLoading()
-					this.formData.is_author_like = !this.formData.is_author_like
-					uni.$emit('update_author')
-					uni.showToast({
-						title:this.formData.is_author_like?'关注作者成功':'取消关注作者',
-						icon:'none'
-					})
-				})
-			},
-			// 打开评论列表
+			/**
+			 * 打开评论列表
+			 */
 			open(){
 				uni.navigateTo({
 					url:'../detail-comments/detail-comments?id='+this.formData._id
 				})
 			},
-			// 收藏
-			likeTap(article_id){
-				this.setUpadteLike(article_id)
-			},
 			// 点赞
 			thumbsup(article_id){
 				this.setUpdateThumbs(article_id)
 			},
-			setUpdateThumbs(article_id){
-				uni.showLoading()
-				this.$uniCloudFunction('update_thumbsup', {
-					article_id
-				}).then(res=>{
-					uni.hideLoading()
-					this.formData.is_thumbs_up = true
-					this.formData.thumbs_up_count++
-					uni.showToast({
-						title:res.msg
-					})
-				})
+			// 收藏
+			likeTap(article_id){
+				console.log('收藏文章');
+				this.setUpadteLike(article_id)
 			},
-			// 收藏文章 
-			setUpadteLike(article_id){
-				uni.showLoading()
-				this.$uniCloudFunction('update_like', {
-					article_id
-				}).then(res=>{
-					uni.hideLoading()
-					this.formData.is_like = !this.formData.is_like
-					uni.$emit('update_article','follow')
-					uni.showToast({
-						title:this.formData.is_like ?'收藏成功':'取消收藏',
-						icon:'none'
-					})
-				})
-			},
-			getDetail() {
-				this.$uniCloudFunction('get_detail', {
-					article_id: this.formData._id
-				}).then(res => {
-					this.formData = res.data
-				})
+			// 关注
+			follow(author_id){
+				console.log('关注');
+				this.setUpdateAuhtor(author_id)
 			},
 			// 打开评论发布窗口
 			openComment(){
@@ -158,7 +107,6 @@
 			submit(content){
 				this.setUpdateComment({content,...this.replyFormData})
 			},
-			// 回复评论
 			reply(e){
 				this.replyFormData = {
 					"comment_id":e.comments.comment_id,
@@ -167,6 +115,7 @@
 				if(e.comments.reply_id){
 					this.replyFormData.reply_id = e.comments.reply_id
 				}
+				console.log(this.replyFormData);
 				this.openComment()
 			},
 			setUpdateComment(content){
@@ -174,8 +123,10 @@
 					article_id:this.formData._id,
 					...content
 				}
+				// console.log(formdata);
 				uni.showLoading()
-				this.$uniCloudFunction('update_comment', formdata).then((res)=>{
+				this.$api.update_comment(formdata).then((res)=>{
+					console.log(res);
 					uni.hideLoading()
 					uni.showToast({
 						title:'评论发布成功'
@@ -185,9 +136,19 @@
 					this.replyFormData = {}
 				})
 			},
+			// 获取详情信息
+			getDetail() {
+				this.$api.get_detail({
+					article_id: this.formData._id
+				}).then((res) => {
+					const {data} = res
+					this.formData = data
+					console.log(res);
+				})
+			},
 			// 请求评论内容
 			getComments(){
-				this.$uniCloudFunction('get_comments', {
+				this.$api.get_comments({
 					article_id: this.formData._id
 				}).then(res=>{
 					console.log(res);
@@ -195,10 +156,53 @@
 					this.commentsList = data
 				})
 			},
+			// 关注作者
+			setUpdateAuhtor(author_id){
+				uni.showLoading()
+				this.$api.update_author({
+					author_id
+				}).then(res=>{
+					uni.hideLoading()
+					this.formData.is_author_like = !this.formData.is_author_like
+					uni.$emit('update_author')
+					uni.showToast({
+						title:this.formData.is_author_like?'关注作者成功':'取消关注作者',
+						icon:'none'
+					})
+				})
+			},
+			// 收藏文章 
+			setUpadteLike(article_id){
+				uni.showLoading()
+				this.$api.update_like({
+					article_id
+				}).then(res=>{
+					uni.hideLoading()
+					this.formData.is_like = !this.formData.is_like
+					uni.$emit('update_article','follow')
+					uni.showToast({
+						title:this.formData.is_like ?'收藏成功':'取消收藏',
+						icon:'none'
+					})
+					console.log('收藏成功');
+				})
+			},
+			setUpdateThumbs(article_id){
+				uni.showLoading()
+				this.$api.update_thumbsup({
+					article_id
+				}).then(res=>{
+					uni.hideLoading()
+					this.formData.is_thumbs_up = true
+					this.formData.thumbs_up_count++
+					uni.showToast({
+						title:res.msg
+					})
+				})
+			}
 		}
 	}
 </script>
-
 
 <style lang="scss">
 	.detail {
@@ -329,4 +333,6 @@
 			}
 		}
 	}
+	
+
 </style>
